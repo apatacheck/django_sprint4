@@ -1,23 +1,20 @@
 from typing import Tuple, Union
 
 import bs4
-from django.db.models import QuerySet, Model
+from conftest import TitledUrlRepr
+from django.db.models import Model, QuerySet
 from django.forms import BaseForm
 from django.http import HttpResponse
-
-from conftest import TitledUrlRepr
 from fixtures.types import ModelAdapterT
 from form.base_form_tester import (
-    FormTagMissingException,
+    BaseFormTester,
     FormMethodException,
+    FormTagMissingException,
+    FormValidationException,
+    ItemCreatedException,
+    SubmitTester,
     TextareaMismatchException,
     TextareaTagMissingException,
-)
-from form.base_form_tester import (
-    SubmitTester,
-    FormValidationException,
-    BaseFormTester,
-    ItemCreatedException,
 )
 
 
@@ -30,9 +27,7 @@ class CreateCommentFormTester(BaseFormTester):
         **kwargs,
     ):
         try:
-            super().__init__(
-                response, *args, ModelAdapter=ModelAdapter, **kwargs
-            )
+            super().__init__(response, *args, ModelAdapter=ModelAdapter, **kwargs)
         except FormTagMissingException as e:
             raise AssertionError(
                 "Убедитесь, что для аутентифицированного пользователя на"
@@ -87,9 +82,7 @@ class CreateCommentFormTester(BaseFormTester):
                 f"{type(e).__name__}: {e}"
             ) from e
 
-    def test_unlogged_cannot_create(
-        self, form: BaseForm, qs: QuerySet
-    ) -> None:
+    def test_unlogged_cannot_create(self, form: BaseForm, qs: QuerySet) -> None:
         try:
             super().test_unlogged_cannot_create(form, qs)
         except ItemCreatedException as e:
@@ -102,9 +95,7 @@ class CreateCommentFormTester(BaseFormTester):
     def redirect_error_message(
         self, by_user: str, redirect_to_page: Union[TitledUrlRepr, str]
     ) -> str:
-        redirect_to_page_repr = self.get_redirect_to_page_repr(
-            redirect_to_page
-        )
+        redirect_to_page_repr = self.get_redirect_to_page_repr(redirect_to_page)
         return (
             "Убедитесь, что при отправке формы создания комментария"
             f" {by_user} он перенаправляется на {redirect_to_page_repr}."
