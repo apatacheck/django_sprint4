@@ -82,7 +82,10 @@ class PostDetailView(DetailView):
 
     def get_object(self):
         # Получаем пост, учитывая права доступа
-        post = get_object_or_404(Post, id=self.kwargs["post_id"])
+        post = get_object_or_404(
+            Post.objects.annotate(comment_count=Count("comments")),   
+            id=self.kwargs["post_id"]
+        )
         if self.request.user != post.author:
             post = get_object_or_404(
                 Post,

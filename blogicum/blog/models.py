@@ -159,10 +159,7 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-    
-    @property
-    def comment_count(self):
-        return self.comments.count()
+
 
 
 class Comment(models.Model):
@@ -214,8 +211,3 @@ class Comment(models.Model):
         post_title = self.post.title[:30] + "..." if len(self.post.title) > 30 else self.post.title
         return f"Комментарий от {self.author.username} к '{post_title}'"
     
-    @property
-    def short_text(self):
-        if len(self.text) > 50:
-            return self.text[:47] + "..."
-        return self.text

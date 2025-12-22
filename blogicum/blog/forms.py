@@ -10,11 +10,13 @@ class PostForm(forms.ModelForm):
             "title",
             "text",
             "pub_date",
+            "created_at",
             "image",
             "category",
             "location",
             "is_published",
         )
+    
 
 
 class CommentForm(forms.ModelForm):
