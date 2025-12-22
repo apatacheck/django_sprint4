@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "core.apps.CoreConfig", # Приложение core
     "blog.apps.BlogConfig",  # Приложение блога
     "pages.apps.PagesConfig",  # Приложение статических страниц
     "django_bootstrap5",  # Bootstrap для шаблонов

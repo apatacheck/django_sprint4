@@ -26,7 +26,7 @@ post_urls = [
 
 profile_urls = [
     path("edit/", views.ProfileUpdateView.as_view(), name="edit_profile"),
-    path("<slug:username>/", views.UserProfileView.as_view(), name="profile"),
+    path("<str:username>/", views.UserProfileView.as_view(), name="profile"),
 ]
 
 urlpatterns = [
